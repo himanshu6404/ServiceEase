@@ -52,7 +52,7 @@ export default function Hero() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="/login" className="text-sm/6 font-semibold text-white relative inline-block after:block after:h-0.5 after:bg-pink-500 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left">
+            <a href="/signin" className="text-sm/6 font-semibold text-white relative inline-block after:block after:h-0.5 after:bg-pink-500 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left">
               Log in <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
@@ -92,7 +92,7 @@ export default function Hero() {
                     href="#"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-gray-50"
                   >
-                    Log in/Sign Up
+                    Log in
                   </a>
                 </div>
               </div>
