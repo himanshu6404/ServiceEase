@@ -26,8 +26,8 @@ const steps = [
 const About = () => (
   <div id="about" className="bg-purple-100 py-16 px-4 sm:px-10">
 <h2 className="text-4xl font-bold text-center mb-12">
-  <span className="text-black">Verified </span>
-  <span className="text-pink-500">Reviews</span>
+  <span className="text-black">How it </span>
+  <span className="text-pink-500">Works</span>
 </h2>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-7xl mx-auto text-center">
