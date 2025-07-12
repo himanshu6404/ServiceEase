@@ -1,16 +1,56 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate, Link } from "react-router-dom";
+
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in with:", form);
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        alert(errorData?.message || 'Login failed.');
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      alert('Login successful!');
+      console.log(data);
+
+      // Store access token
+localStorage.setItem('token', data?.data?.accessToken);
+
+      // Optional: Redirect to dashboard
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Something went wrong during login.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -31,8 +71,9 @@ const SignIn = () => {
 
       {/* Title Top Left */}
       <div className="absolute top-4 left-6">
-        <a href="/"><h1 className="text-2xl font-bold text-white cursor-pointer">ServiceEase</h1>
-</a>
+        <a href="/">
+          <h1 className="text-2xl font-bold text-white cursor-pointer">ServiceEase</h1>
+        </a>
       </div>
 
       {/* Form Card Centered */}
@@ -68,15 +109,20 @@ const SignIn = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition cursor-pointer"
+            disabled={loading}
+            className={`w-full bg-blue-600 text-white py-2 rounded-md transition ${
+              loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 cursor-pointer'
+            }`}
           >
-            Sign In
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
         <p className="mt-4 text-sm text-center text-gray-600">
           Don’t have an account?{' '}
-          <a href="/signup" className="text-blue-600 font-medium hover:underline">Sign Up</a>
+          <a href="/signup" className="text-blue-600 font-medium hover:underline">
+            Sign Up
+          </a>
         </p>
       </div>
     </div>
