@@ -1,0 +1,19 @@
+Things done so far:
+
+1.Home Page -> Completed
+2.Sign In / Sign Up -> Completed
+3.Dashboard -> Created
+4.Except Book Services,chat with AI,chat service Provider,all is done as per the dummy data.
+
+Things to do :
+
+1.Enable dynamic data to render b/w customer and service Provider.
+2.Make Book services functionable with full payment gateway,render data on backend and simulatenously show it on my booking page if successfull.
+3.Next is Chat option also a sort of web socket use case as a chat ui is expected and talk with users.
+4.Last is chat feature with service provider.
+
+Things to resolve:
+1. Customer is in DB, service provider is hardcoded (not in DB), is chat possible ?
+2.For customer he can see the booking on his Dashboard but for service provider its not there.
+3.Should service provider be also in db and given separate Dashboard.
+

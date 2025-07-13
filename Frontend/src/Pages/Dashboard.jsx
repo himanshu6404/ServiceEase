@@ -54,7 +54,7 @@ export default function Dashboard() {
     { icon: <FaTasks />, title: "Book a Service", link: "/book" },
     { icon: <FaCalendarAlt />, title: "My Bookings", link: "/my-bookings" },
     { icon: <FaHistory />, title: "Past Bookings", link: "/past-bookings" },
-    { icon: <FaRobot />, title: "Ask AI", link: "/ask-ai" },
+    { icon: <FaRobot />, title: "Ask AI", link: "/askAIPage" },
     { icon: <FaComments />, title: "Chat with Provider", link: "/chat" },
   ];
 

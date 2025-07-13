@@ -7,6 +7,7 @@ import Dashboard from "./Pages/Dashboard"; // Assuming you have a Dashboard comp
 import Explore from "./Pages/Explore";
 import MyBooking from "./Pages/MyBooking";
 import PastBooking from "./Pages/PastBooking";
+import AskAIPage from "./Pages/AskAIPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/my-bookings" element={<MyBooking />} />
         <Route path="/past-bookings" element={<PastBooking />} />
+        <Route path="/askAIPage" element={<AskAIPage />} />
         {/* Add more routes as needed */}
         
       </Routes>
