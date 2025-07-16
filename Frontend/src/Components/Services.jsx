@@ -78,10 +78,13 @@ const Services = () => {
   <button className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 cursor-pointer transition">
     Explore More
   </button>
-) : (
-  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition">
+            ) : (
+                <a href="/signin">
+                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition">
     Book Now
   </button>
+                </a>
+
 )}
 
           </div>

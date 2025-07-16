@@ -33,7 +33,7 @@ const Footer = () => {
           <h3 className="text-xl font-semibold text-white mb-4">Contact Us</h3>
           <p className="mb-1">📧 Email: support@ServiceEase.com</p>
           <p className="mb-1">📞 Phone: +1 234 567 890</p>
-          <p className="mb-1">📍 Address: NIT Jalandhar, Punjab, India – 144011</p>
+          <p className="mb-1">📍 Address: NITJ Campus, Punjab, India – 144011</p>
         </div>
 
       </div>
