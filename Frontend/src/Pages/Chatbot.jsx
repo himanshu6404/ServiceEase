@@ -47,7 +47,7 @@ const res = await fetch("http://localhost:7000/api/v1/users/chatAI", {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#161B22] text-white px-4 py-10 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="relative min-h-screen bg-[#161B22] text-white px-4 py-10 sm:px-6 lg:px-8 flex items justify-center">
       {/* Background Blur */}
       <div
         aria-hidden="true"
@@ -70,9 +70,9 @@ const res = await fetch("http://localhost:7000/api/v1/users/chatAI", {
       </div>
 
       {/* Chat Window */}
-      <div className="w-full sm:w-[600px] max-h-[90vh] flex flex-col shadow-2xl rounded-2xl border bg-white text-black">
+      <div className="w-full sm:w-[700px] max-h-[70vh] flex flex-col shadow-2xl rounded-2xl border bg-white text-black">
         <div className="bg-blue-600 text-white p-4 rounded-t-2xl font-semibold text-xl text-center">
-          ServiceEase Assistant
+          ServiceEase AI ChatBot
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
