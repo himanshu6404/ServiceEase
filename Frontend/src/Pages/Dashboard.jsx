@@ -18,7 +18,7 @@ export default function Dashboard() {
       }
 
       try {
-        const res = await fetch('http://localhost:5000/api/v1/users/me', {
+        const res = await fetch('http://localhost:7000/api/v1/users/me', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

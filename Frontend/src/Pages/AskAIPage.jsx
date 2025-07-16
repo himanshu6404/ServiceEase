@@ -45,9 +45,12 @@ const AskAIPage = () => {
             Not sure what's wrong? Describe your issue and let our AI Assistant guide you.
             From diagnosing the problem to suggesting the right expert — we've got your back!
           </p>
-          <button className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition cursor-pointer">
+          <a href="/chatbot">
+                    <button className="bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition cursor-pointer">
             Ask Now →
           </button>
+          </a>
+
         </div>
       </div>
     </div>

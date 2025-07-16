@@ -20,8 +20,10 @@ connectDB()
 .catch((err) => {
         console.log("MONGODB connection failed!!", err);
 })
+app.get('/health', (req, res) => {
+    res.send('OK')
+});
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
-

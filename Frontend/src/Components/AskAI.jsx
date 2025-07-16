@@ -15,7 +15,7 @@ const AskAI = () => (
         Not sure what's wrong? Describe your issue and let our AI Assistant guide you. From diagnosing the problem to suggesting the right expert — we've got your back!
       </p>
       <a
-        href="/ask-ai"
+        href="/chatbot"
         className="inline-block bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 transition"
       >
         Ask Now →
