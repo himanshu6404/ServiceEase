@@ -9,7 +9,9 @@ import MyBooking from "./Pages/MyBooking";
 import PastBooking from "./Pages/PastBooking";
 import AskAIPage from "./Pages/AskAIPage";
 import Chatbot from "./Pages/Chatbot"; // Importing the Chatbot component
-
+import Booking from "./Pages/Booking"; // Assuming you have a Booking component
+import BookingForm from "./Pages/BookingForm"; // Assuming you have a BookingForm component
+import BookingSuccess from "./Pages/BookingSuccess"; // Assuming you have a BookingSuccess component
 function App() {
   return (
     <Router>
@@ -24,6 +26,9 @@ function App() {
         <Route path="/past-bookings" element={<PastBooking />} />
         <Route path="/askAIPage" element={<AskAIPage />} />
         <Route path="/chatbot" element={<Chatbot />} /> {/* Adding the Chatbot route */}
+        <Route path="/book" element={<Booking />} /> {/* Assuming you have a MyBooking component */}
+        <Route path="/booking-form" element={<BookingForm />} /> {/* Assuming you have a BookingForm component */}
+        <Route path="/booking-success" element={<BookingSuccess />} /> {/* Assuming you have a
 
         {/* Add more routes as needed */} 
         
