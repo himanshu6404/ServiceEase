@@ -52,6 +52,8 @@ export default function ProviderDashboard() {
   const dashboardItems = [
     { icon: <FaCalendarAlt />, title: "My Bookings", link: "/provider/my-bookings" },
     { icon: <FaHistory />, title: "Upcoming Bookings", link: "/provider/upcoming-bookings" },
+    { icon: <FaComments />, title: "Chat with Provider", link: "/chat-app" },
+    
   ];
 
   return (
