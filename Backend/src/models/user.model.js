@@ -25,8 +25,12 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["Customer", "ServiceProvider"],
-    default: "Customer"
+    enum: ['customer', 'serviceProvider'],
+    default: 'customer'
+  },
+  serviceType: {
+    type: String,
+    default: null // only used if role is serviceProvider
   },
   refreshToken: {
     type: String

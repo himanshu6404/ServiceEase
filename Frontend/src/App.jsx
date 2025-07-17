@@ -1,17 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import AskAI from "./Components/AskAI";
-import SignIn from "./Pages/SignIn";
-import SignUp from "./Pages/SignUp"; // Assuming you have a SignUp component
-import Dashboard from "./Pages/Dashboard"; // Assuming you have a Dashboard component
-import Explore from "./Pages/Explore";
-import MyBooking from "./Pages/MyBooking";
-import PastBooking from "./Pages/PastBooking";
+import SignIn from "./Pages/Users/SignIn";
+import SignUp from "./Pages/Users/SignUp"; // Assuming you have a SignUp component
+import Dashboard from "./Pages/Users/Dashboard"; // Assuming you have a Dashboard component
+import Explore from "./Pages/Users/Explore";
+import MyBooking from "./Pages/Users/MyBooking";
+import PastBooking from "./Pages/Users/PastBooking";
 import AskAIPage from "./Pages/AskAIPage";
 import Chatbot from "./Pages/Chatbot"; // Importing the Chatbot component
-import Booking from "./Pages/Booking"; // Assuming you have a Booking component
-import BookingForm from "./Pages/BookingForm"; // Assuming you have a BookingForm component
-import BookingSuccess from "./Pages/BookingSuccess"; // Assuming you have a BookingSuccess component
+import Booking from "./Pages/Users/Booking"; // Assuming you have a Booking component
+import BookingForm from "./Pages/Users/BookingForm"; // Assuming you have a BookingForm component
+import BookingSuccess from "./Pages/Users/BookingSuccess"; // Assuming you have a BookingSuccess 
+import SignupProvider from "./Pages/Provider/SignUp-Provider";
+import ChooseRole from "./Pages/ChooseRole";
+import ProviderDashboard from "./Pages/Provider/DashboardProvider";
 function App() {
   return (
     <Router>
@@ -28,9 +31,14 @@ function App() {
         <Route path="/chatbot" element={<Chatbot />} /> {/* Adding the Chatbot route */}
         <Route path="/book" element={<Booking />} /> {/* Assuming you have a MyBooking component */}
         <Route path="/booking-form" element={<BookingForm />} /> {/* Assuming you have a BookingForm component */}
-        <Route path="/booking-success" element={<BookingSuccess />} /> {/* Assuming you have a
+        <Route path="/booking-success" element={<BookingSuccess />} />
+        <Route path="/signup-provider" element={<SignupProvider />} /> {/* Adding the SignupProvider route */}
+        <Route path="/choose-role" element={<ChooseRole />} /> {/* Adding the ChooseRole route }
 
         {/* Add more routes as needed */} 
+        <Route path="/dashboard-provider" element={<ProviderDashboard />} /> {/* Adding the ProviderDashboard route */}
+        
+        {/* Add more routes as needed */}
         
       </Routes>
     </Router>

@@ -26,7 +26,7 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, phoneNo } = req.body;
+  const { name, email, password, phoneNo,role,serviceType } = req.body;
 
   if ([name, email, password, phoneNo].some((field) => !field?.trim())) {
     throw new ApiError(400, "All fields (name, email, password, phoneNo) are required");
@@ -37,19 +37,27 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "User with this email already exists");
   }
 
-  const user = await User.create({
-    name: name.trim(),
-    email: email.trim().toLowerCase(),
-    password,
-    phoneNo: phoneNo.trim(),
-    role: "Customer" // ✅ Set default role as Customer
-  });
+const userData = {
+  name: name.trim(),
+  email: email.trim().toLowerCase(),
+  password,
+  phoneNo: phoneNo.trim(),
+  role: role || "customer", // Set default as customer if not provided
+};
+
+// Add serviceType only if user is a service provider
+if (role === "serviceProvider" && serviceType) {
+  userData.serviceType = serviceType;
+}
+
+const user = await User.create(userData);
+
 
   const createdUser = await User.findById(user._id).select("-password -refreshToken");
 
   if (!createdUser) {
     throw new ApiError(500, "Something went wrong while registering the user");
-  }
+  } 
 
   return res.status(201).json(
     new ApiResponse(201, createdUser, "User Registered Successfully")

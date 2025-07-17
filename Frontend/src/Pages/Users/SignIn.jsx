@@ -13,45 +13,55 @@ const SignIn = () => {
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const response = await fetch('http://localhost:7000/api/v1/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: form.email.trim().toLowerCase(),
-          password: form.password,
-        }),
-      });
+  try {
+    const response = await fetch('http://localhost:7000/api/v1/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: form.email.trim().toLowerCase(),
+        password: form.password,
+      }),
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        alert(errorData?.message || 'Login failed.');
-        setLoading(false);
-        return;
-      }
-
-      const data = await response.json();
-      alert('Login successful!');
-      console.log(data);
-
-      // Store access token
-localStorage.setItem('token', data?.data?.accessToken);
-
-      // Optional: Redirect to dashboard
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('Login error:', err);
-      alert('Something went wrong during login.');
-    } finally {
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      alert(errorData?.message || 'Login failed.');
       setLoading(false);
+      return;
     }
-  };
+
+    const data = await response.json();
+    alert('Login successful!');
+    console.log(data);
+
+    const { accessToken, user } = data?.data;
+
+    // ✅ Store token and user info
+    localStorage.setItem('token', accessToken);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    // ✅ Redirect based on role
+    if (user.role === "customer") {
+      navigate("/dashboard");
+    } else if (user.role === "serviceProvider") {
+      navigate("/dashboard-provider");
+    } else {
+      navigate("/"); // fallback
+    }
+  } catch (err) {
+    console.error('Login error:', err);
+    alert('Something went wrong during login.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-[#161B22] flex flex-col justify-center px-4 py-10 sm:px-6 lg:px-8">
@@ -120,7 +130,7 @@ localStorage.setItem('token', data?.data?.accessToken);
 
         <p className="mt-4 text-sm text-center text-gray-600">
           Don’t have an account?{' '}
-          <a href="/signup" className="text-blue-600 font-medium hover:underline">
+          <a href="/choose-role" className="text-blue-600 font-medium hover:underline">
             Sign Up
           </a>
         </p>
