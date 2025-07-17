@@ -15,6 +15,11 @@ import BookingSuccess from "./Pages/Users/BookingSuccess"; // Assuming you have 
 import SignupProvider from "./Pages/Provider/SignUp-Provider";
 import ChooseRole from "./Pages/ChooseRole";
 import ProviderDashboard from "./Pages/Provider/DashboardProvider";
+import ChatBox from "./Pages/ChatApp"; // Importing the ChatBox component
+
+
+
+
 function App() {
   return (
     <Router>
@@ -38,8 +43,7 @@ function App() {
         {/* Add more routes as needed */} 
         <Route path="/dashboard-provider" element={<ProviderDashboard />} /> {/* Adding the ProviderDashboard route */}
         
-        {/* Add more routes as needed */}
-        
+        <Route path="/chat-app" element={<ChatBox />} /> {/* Adding the ChatBox route */}        
       </Routes>
     </Router>
   );
