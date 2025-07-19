@@ -1,65 +1,84 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-
 
 const SignIn = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        if (user.role === 'serviceProvider') {
+          navigate('/dashboard-provider');
+        } else if (user.role === 'customer' || user.role === 'Customer') {
+          navigate('/dashboard');
+        } else {
+          navigate('/');
+        }
+      } catch (err) {
+        console.error("Invalid user in localStorage:", err);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    }
+  }, []); 
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
   e.preventDefault();
   setLoading(true);
 
-  try {
-    const response = await fetch('http://localhost:7000/api/v1/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: form.email.trim().toLowerCase(),
-        password: form.password,
-      }),
-    });
+  setTimeout(async () => {
+    try {
+      const response = await fetch('http://localhost:7000/api/v1/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-      alert(errorData?.message || 'Login failed.');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        alert(errorData?.message || 'Login failed.');
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      // alert('Login successful!');
+      console.log(data);
+
+      const { accessToken, user } = data?.data;
+
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      if (user.role === "serviceProvider") {
+        navigate("/dashboard-provider");
+      } else if (user.role === "customer" || user.role === "Customer") {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Something went wrong during login.');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const data = await response.json();
-    alert('Login successful!');
-    console.log(data);
-
-    const { accessToken, user } = data?.data;
-
-    // ✅ Store token and user info
-    localStorage.setItem('token', accessToken);
-    localStorage.setItem('user', JSON.stringify(user));
-
-    // ✅ Redirect based on role
-    if (user.role === "customer") {
-      navigate("/dashboard");
-    } else if (user.role === "serviceProvider") {
-      navigate("/dashboard-provider");
-    } else {
-      navigate("/"); // fallback
-    }
-  } catch (err) {
-    console.error('Login error:', err);
-    alert('Something went wrong during login.');
-  } finally {
-    setLoading(false);
-  }
+  }, 5000); // 5 seconds delay
 };
 
 
@@ -117,15 +136,16 @@ const handleSubmit = async (e) => {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full bg-blue-600 text-white py-2 rounded-md transition ${
-              loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 cursor-pointer'
-            }`}
-          >
-            {loading ? 'Signing In...' : 'Sign In'}
-          </button>
+<button
+  type="submit"
+  disabled={loading}
+  className={`w-full bg-blue-600 text-white py-2 rounded-md transition ${
+    loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 cursor-pointer'
+  }`}
+>
+  {loading ? 'Signing In...' : 'Sign In'}
+</button>
+
         </form>
 
         <p className="mt-4 text-sm text-center text-gray-600">

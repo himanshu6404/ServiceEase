@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt, FaHistory } from 'react-icons/fa';
+import { FaComments } from 'react-icons/fa';
+
 
 export default function ProviderDashboard() {
   const [user, setUser] = useState(null);
@@ -17,7 +19,7 @@ export default function ProviderDashboard() {
         return;
       }
 
-      try {
+ try {
         const res = await fetch('http://localhost:7000/api/v1/users/me', {
           method: 'GET',
           headers: {
@@ -33,7 +35,8 @@ export default function ProviderDashboard() {
         }
 
         const data = await res.json();
-        setUser(data?.data);
+        setUser(data?.data ); // fallback options
+
       } catch (err) {
         console.error("Error fetching user:", err);
         alert("Something went wrong.");

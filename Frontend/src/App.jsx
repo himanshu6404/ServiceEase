@@ -16,7 +16,7 @@ import SignupProvider from "./Pages/Provider/SignUp-Provider";
 import ChooseRole from "./Pages/ChooseRole";
 import ProviderDashboard from "./Pages/Provider/DashboardProvider";
 import ChatBox from "./Pages/ChatApp"; // Importing the ChatBox component
-
+import ProtectedRoute from "./ProtectedRoute"; // Importing the ProtectedRoute component
 
 
 
@@ -28,7 +28,9 @@ function App() {
         <Route path="/askAI" element={<AskAI />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['customer','Customer']}>
+    <Dashboard />
+  </ProtectedRoute>} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/my-bookings" element={<MyBooking />} />
         <Route path="/past-bookings" element={<PastBooking />} />
@@ -41,7 +43,9 @@ function App() {
         <Route path="/choose-role" element={<ChooseRole />} /> {/* Adding the ChooseRole route }
 
         {/* Add more routes as needed */} 
-        <Route path="/dashboard-provider" element={<ProviderDashboard />} /> {/* Adding the ProviderDashboard route */}
+        <Route path="/dashboard-provider" element={<ProtectedRoute allowedRoles={['serviceProvider']}>
+    <ProviderDashboard />
+  </ProtectedRoute>} /> {/* Adding the ProviderDashboard route */}
         
         <Route path="/chat-app" element={<ChatBox />} /> {/* Adding the ChatBox route */}        
       </Routes>

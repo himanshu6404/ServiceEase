@@ -74,10 +74,12 @@ const Services = () => {
             <p className="text-sm text-gray-600 mb-4">
               {service.description}
             </p>
-{service.name === "Other Services" ? (
-  <button className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 cursor-pointer transition">
+            {service.name === "Other Services" ? (
+              <a href="/signin">
+                  <button className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 cursor-pointer transition">
     Explore More
   </button>
+              </a>
             ) : (
                 <a href="/signin">
                     <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition">

@@ -10,36 +10,43 @@ import cust3 from '../assets/cust3.jpg';
 
 const testimonials = [
   {
-    name: "Jane Doe",
-    image: cust2,
+    name: "Shreya Kapoor",
+    image:'https://randomuser.me/api/portraits/women/18.jpg',
     description:
       "Had a leaking tap and got it fixed the same day thanks to ServiceEase. The plumber was polite, skilled, and super professional. From booking to payment, everything was handled online. No calls, no hassles. Really impressed with the entire flow!",
     rating: 5,
   },
   {
-    name: "John Smith",
-    image: cust3,
+    name: "Ajay Singh",
+    image:'https://randomuser.me/api/portraits/men/12.jpg',
     description:
       "Used ServiceEase to clean my kitchen before Diwali — smooth process, excellent service! The guy arrived on time and did a great job. I'm definitely going to use it again.",
     rating: 4,
   },
   {
-    name: "Emily Stokes",
-    image: cust1,
+    name: "Priyanka Sharma",
+    image:'https://randomuser.me/api/portraits/women/15.jpg',
     description:
       "Booked deep cleaning service and the team was super responsive. Loved how neat and quick everything was. Highly recommend their chat assistant too!",
     rating: 5,
   },
   {
     name: "Riya Mehra",
-    image: cust1,
+    image:'https://randomuser.me/api/portraits/women/8.jpg',
     description:
       "Got my living room painted through ServiceEase and the experience was fantastic. The painter was neat, quick, and helped me choose the perfect color. The app kept me updated throughout. Feels like I’m living in a brand-new space!",
     rating: 4,
   },
   {
     name: "Amit Verma",
-    image: cust3,
+    image:'https://randomuser.me/api/portraits/men/18.jpg',
+    description:
+      "I recently moved houses and booked shifting services through ServiceEase. The movers were fast, careful with my stuff, and super professional. Everything was packed and unpacked smoothly. This platform really saved me time and stress!",
+    rating: 5,
+  },
+    {
+    name: "Vishal Shah",
+    image:'https://randomuser.me/api/portraits/men/23.jpg',
     description:
       "I recently moved houses and booked shifting services through ServiceEase. The movers were fast, careful with my stuff, and super professional. Everything was packed and unpacked smoothly. This platform really saved me time and stress!",
     rating: 5,
@@ -56,7 +63,7 @@ const Reviews = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 4500,
+    autoplaySpeed: 2500,
     arrows: true,
   };
 

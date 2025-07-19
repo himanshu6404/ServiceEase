@@ -109,9 +109,13 @@ const Explore = () => {
               <div className="mb-4">{service.icon}</div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">{service.name}</h3>
               <p className="text-sm text-gray-600 mb-4">{service.description}</p>
+              <a href="/book">
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition">
                 Book Now
               </button>
+
+              </a>
+
             </div>
           ))
         ) : (
