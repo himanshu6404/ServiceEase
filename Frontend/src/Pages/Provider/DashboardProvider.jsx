@@ -20,7 +20,7 @@ export default function ProviderDashboard() {
       }
 
  try {
-        const res = await fetch('http://localhost:4000/api/v1/users/me', {
+        const res = await fetch('https://serviceease-irto.onrender.com/api/v1/users/me', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

@@ -19,7 +19,7 @@ export default function MyBooking() {
     const fetchCustomerBookings = async () => {
       if (!user?._id) return;
       try {
-        const res = await fetch(`http://localhost:4000/api/bookings/customer/${user._id}`);
+        const res = await fetch(`https://serviceease-irto.onrender.com/api/bookings/customer/${user._id}`);
         const data = await res.json();
         setBookings(data);
       } catch (error) {

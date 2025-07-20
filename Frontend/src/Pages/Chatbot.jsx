@@ -19,7 +19,7 @@ const Chatbot = () => {
     setLoading(true);
 
     try {
-const res = await fetch("http://localhost:4000/api/v1/users/chatAI", {
+const res = await fetch("https://serviceease-irto.onrender.com/api/v1/users/chatAI", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ question: userInput }), // ✅ match backend

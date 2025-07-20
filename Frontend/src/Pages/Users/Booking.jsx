@@ -39,7 +39,7 @@ const BookingPage = () => {
   useEffect(() => {
     const fetchProviders = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/service-providers");
+        const res = await axios.get("https://serviceease-irto.onrender.com/api/service-providers");
         setProviders(res.data);
       } catch (err) {
         console.error("Error fetching providers", err);

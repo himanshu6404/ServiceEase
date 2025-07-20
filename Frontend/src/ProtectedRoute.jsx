@@ -14,7 +14,7 @@ export default function ProtectedRoute({ children, allowedRoles }) {
           return;
         }
 
-        const res = await fetch('http://localhost:4000/api/v1/users/me', {
+        const res = await fetch('https://serviceease-irto.onrender.com/api/v1/users/me', {
           headers: {
             Authorization: `Bearer ${token}`
           }

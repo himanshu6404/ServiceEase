@@ -32,8 +32,8 @@ const BookingSuccess = () => {
           Booking Successful 🎉
         </h2>
         <img
-          src={provider?.photo}
-          alt={provider?.name}
+         src={"https://randomuser.me/api/portraits/men/18.jpg"}
+         alt={provider?.name || "Default user"}
           className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border"
         />
         <h3 className="text-lg font-semibold">{provider?.name}</h3>
