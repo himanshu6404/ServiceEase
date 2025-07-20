@@ -20,7 +20,7 @@ export default function ProviderDashboard() {
       }
 
  try {
-        const res = await fetch('http://localhost:7000/api/v1/users/me', {
+        const res = await fetch('http://localhost:4000/api/v1/users/me', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -53,8 +53,7 @@ export default function ProviderDashboard() {
   };
 
   const dashboardItems = [
-    { icon: <FaCalendarAlt />, title: "My Bookings", link: "/provider/my-bookings" },
-    { icon: <FaHistory />, title: "Upcoming Bookings", link: "/provider/upcoming-bookings" },
+    { icon: <FaCalendarAlt />, title: "My Bookings", link: "/my-provider-bookings" },
     { icon: <FaComments />, title: "Chat with Provider", link: "/chat-app" },
     
   ];

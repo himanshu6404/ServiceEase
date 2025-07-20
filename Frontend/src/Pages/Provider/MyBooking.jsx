@@ -1,36 +1,35 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-export default function MyBooking() {
+export default function MyProviderBookings() {
   const [bookings, setBookings] = useState([]);
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Replace this logic with your actual authentication/user fetching method
-    const user = JSON.parse(localStorage.getItem('user')); // assuming user is stored here
+    const user = JSON.parse(localStorage.getItem('user')); // assuming stored on login
     if (user && user._id) {
       setUserId(user._id);
     }
   }, []);
 
   useEffect(() => {
-    const fetchCustomerBookings = async () => {
+    const fetchProviderBookings = async () => {
       if (!userId) return;
       try {
-        const res = await fetch(`http://localhost:4000/api/bookings/customer/${userId}`);
+        const res = await fetch(`http://localhost:4000/api/bookings/provider/${userId}`);
         const data = await res.json();
         setBookings(data);
       } catch (error) {
-        console.error('Error fetching bookings:', error);
+        console.error('Error fetching provider bookings:', error);
       }
     };
 
-    fetchCustomerBookings();
+    fetchProviderBookings();
   }, [userId]);
 
   return (
     <div className="min-h-screen bg-[#161B22] text-white relative px-4 py-12 sm:px-6 lg:px-8">
-      {/* Background Blur Top */}
+      {/* Background Blur */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl"
@@ -47,7 +46,7 @@ export default function MyBooking() {
 
       <h2 className="text-4xl font-bold text-center mb-6">
         <span className="text-white">My </span>
-        <span className="text-blue-600">Bookings</span>
+        <span className="text-blue-600">Service Bookings</span>
       </h2>
 
       <div className="max-w-5xl mx-auto overflow-x-auto">
@@ -56,8 +55,9 @@ export default function MyBooking() {
             <tr>
               <th className="px-4 py-3 text-left">S.No</th>
               <th className="px-4 py-3 text-left">Service</th>
-              <th className="px-4 py-3 text-left">Provider</th>
+              <th className="px-4 py-3 text-left">Customer</th>
               <th className="px-4 py-3 text-left">Scheduled Date</th>
+              <th className="px-4 py-3 text-left">Address</th>
               <th className="px-4 py-3 text-left">Phone No</th>
               <th className="px-4 py-3 text-left">Chat</th>
             </tr>
@@ -68,9 +68,11 @@ export default function MyBooking() {
                 <tr key={item._id} className="border-b hover:bg-gray-100">
                   <td className="px-4 py-3">{index + 1}</td>
                   <td className="px-4 py-3">{item.serviceName}</td>
-                  <td className="px-4 py-3">{item.providerName}</td>
+                      <td className="px-4 py-3">{item.customerName?.charAt(0).toUpperCase() + item.customerName?.slice(1).toLowerCase()}</td>  {/*Capitalizing first letter*/}
                   <td className="px-4 py-3">{new Date(item.date).toLocaleDateString()}</td>
-                  <td className="px-4 py-3">{item.providerPhone || 'N/A'}</td>
+                      <td className="px-4 py-3">{item.address || 'N/A'}</td>
+                      <td className="px-4 py-3">{item.phoneNo || 'N/A'}</td>
+
                   <td className="px-4 py-3">
                     <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 cursor-pointer">
                       Chat

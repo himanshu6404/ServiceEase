@@ -38,7 +38,7 @@ const SignIn = () => {
 
   setTimeout(async () => {
     try {
-      const response = await fetch('http://localhost:7000/api/v1/users/login', {
+      const response = await fetch('http://localhost:4000/api/v1/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

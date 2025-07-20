@@ -30,7 +30,7 @@ export default function SignupProvider() {
     };
 
     try {
-      const response = await fetch('http://localhost:7000/api/v1/users/register', {
+      const response = await fetch('http://localhost:4000/api/v1/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

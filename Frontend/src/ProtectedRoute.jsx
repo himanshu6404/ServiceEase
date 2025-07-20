@@ -7,32 +7,41 @@ export default function ProtectedRoute({ children, allowedRoles }) {
 
   useEffect(() => {
     const checkAccess = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/signin');
-        return;
-      }
-
-      const res = await fetch('http://localhost:7000/api/v1/users/me', {
-        headers: {
-          Authorization: `Bearer ${token}`
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/signin');
+          return;
         }
-      });
 
-      const data = await res.json();
-      const user = data?.data || data?.user || data;
+        const res = await fetch('http://localhost:4000/api/v1/users/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
 
-      if (!allowedRoles.includes(user.role)) {
-        alert('Unauthorized access');
-        navigate('/');
-        return;
+        if (!res.ok) {
+          throw new Error('Unauthorized');
+        }
+
+        const data = await res.json();
+        const user = data?.data || data?.user || data;
+
+        if (!allowedRoles.includes(user.role)) {
+          alert('Unauthorized access');
+          navigate('/');
+          return;
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Error in ProtectedRoute:', error);
+        navigate('/signin');
       }
-
-      setLoading(false);
     };
 
     checkAccess();
-  }, []);
+  }, [navigate, allowedRoles]);
 
   if (loading) return <div className="text-white text-center mt-10">Loading...</div>;
 

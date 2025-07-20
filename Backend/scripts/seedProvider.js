@@ -1,61 +1,46 @@
-// seedServiceProviders.js
-
+// seed.js
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import { User } from "../src/models/user.model.js";
+import bcrypt from "bcrypt";
+import {User} from "../src/models/user.model.js"
+import { serviceProviders } from "../../Frontend/src/Pages/Users/serviceProvider.js";
 
-dotenv.config(); // Load MongoDB URI from .env
+dotenv.config();
 
-const seedServiceProviders = async () => {
+mongoose.connect("mongodb+srv://thebeast8697jdhs:boss123@cluster101.mdvn0ap.mongodb.net/ServiceEase")
+  .then(() => {
+    console.log("✅ MongoDB connected");
+    seedServiceProviders();
+  })
+  .catch(err => {
+    console.error("❌ MongoDB connection failed:", err);
+    process.exit(1);
+  });
+
+async function seedServiceProviders() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    // Clear old service providers
+    await User.deleteMany({ role: "serviceProvider" });
 
-    console.log("✅ Connected to MongoDB");
+    // Map your serviceProviders array to match User model
+    const providersToInsert = await Promise.all( 
+      serviceProviders.map(async (provider, index) => {
+        return {
+          name: provider.name,
+          email: `provider${index}@service.com`, // unique dummy email
+          password: await bcrypt.hash("Service@123", 10), // hashed default password
+          phoneNo: provider.phone,
+          role: "serviceProvider",
+          serviceType: provider.service,
+        };
+      })
+    );
 
-    // Optional: clear existing providers
-
-    const providers = [
-      {
-        name: "Ravi Painter",
-        email: "ravi@service.com",
-        password: await bcrypt.hash("ravi123", 10),
-        phoneNo: "9876543210",
-        role: "ServiceProvider",
-        serviceType: "Painting",
-        experience: 5,
-      },
-      {
-        name: "Anita Cleaner",
-        email: "anita@service.com",
-        password: await bcrypt.hash("anita123", 10),
-        phoneNo: "9988776655",
-        role: "ServiceProvider",
-        serviceType: "Cleaning",
-        experience: 3,
-      },
-      {
-        name: "Karan Electrician",
-        email: "karan@service.com",
-        password: await bcrypt.hash("karan123", 10),
-        phoneNo: "9123456789",
-        role: "ServiceProvider",
-        serviceType: "Electric",
-        experience: 7,
-      },
-    ];
-
-    await User.insertMany(providers);
-
-    console.log("🎉 Service providers seeded successfully!");
+    const inserted = await User.insertMany(providersToInsert);
+    console.log(`✅ Seeded ${inserted.length} service providers`);
     process.exit(0);
   } catch (error) {
-    console.error("❌ Error seeding providers:", error);
+    console.error("❌ Seeding failed:", error);
     process.exit(1);
   }
-};
-
-seedServiceProviders();
+}

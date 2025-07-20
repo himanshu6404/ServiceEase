@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
   FaBroom,
@@ -14,7 +15,6 @@ import {
   FaCarAlt,
   FaDoorOpen,
 } from "react-icons/fa";
-import { serviceProviders } from "./serviceProvider";
 
 const allServices = [
   { name: "Cleaning", icon: <FaBroom className="text-pink-500" /> },
@@ -32,12 +32,27 @@ const allServices = [
 ];
 
 const BookingPage = () => {
+  const [providers, setProviders] = useState([]);
   const [selectedService, setSelectedService] = useState("");
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // ✅ Added
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/service-providers");
+        setProviders(res.data);
+      } catch (err) {
+        console.error("Error fetching providers", err);
+      }
+    };
+
+    fetchProviders();
+  }, []);
 
   const handleBookClick = (provider) => {
     navigate("/booking-form", { state: { provider, service: selectedService } });
   };
+
   return (
     <div className="relative min-h-screen bg-[#161B22] text-white px-4 py-10 sm:px-6 lg:px-8 flex flex-col items-center">
       {/* Background Blur */}
@@ -60,7 +75,6 @@ const BookingPage = () => {
           <h1 className="text-2xl font-bold text-white cursor-pointer">ServiceEase</h1>
         </a>
       </div>
-          
 
       <div className="w-full max-w-4xl mt-10">
         <h2 className="text-3xl font-semibold mb-8 text-center">
@@ -93,30 +107,28 @@ const BookingPage = () => {
               Available {selectedService} Providers
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {serviceProviders
-                .filter((p) => p.service === selectedService)
+              {providers
+                .filter((p) => p.serviceType === selectedService) // ✅ Adjust field name based on backend
                 .map((provider, idx) => (
                   <div
                     key={idx}
                     className="bg-purple-100 rounded-2xl p-4 shadow-xl text-black flex items-center gap-4 transition transform hover:scale-[1.02]"
                   >
-                    <img
-                      src={provider.photo}
+                    {/* <img
+                      src={provider.photo || "https://randomuser.me/api/portraits/men/23.jpg"} // Fallback image
                       alt={provider.name}
                       className="w-16 h-16 rounded-full object-cover border-2 border-blue-600"
-                    />
+                    /> */}
                     <div className="flex-1">
                       <h3 className="font-bold text-lg">{provider.name}</h3>
-                      <p className="text-sm text-gray-600">
-                        {provider.service}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        📞 {provider.phone}
-                      </p>
-                        </div>
-                        
-                        <button className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition cursor-pointer"
-                            onClick={() => handleBookClick(provider)}>
+                      <p className="text-sm text-gray-600">{provider.serviceType}</p>
+                      <p className="text-sm text-gray-600">📞 {provider.phoneNo}</p>
+                    </div>
+
+                    <button
+                      className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition cursor-pointer"
+                      onClick={() => handleBookClick(provider)}
+                    >
                       Book
                     </button>
                   </div>

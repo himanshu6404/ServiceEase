@@ -17,6 +17,7 @@ import ChooseRole from "./Pages/ChooseRole";
 import ProviderDashboard from "./Pages/Provider/DashboardProvider";
 import ChatBox from "./Pages/ChatApp"; // Importing the ChatBox component
 import ProtectedRoute from "./ProtectedRoute"; // Importing the ProtectedRoute component
+import MyProviderBookings from "./Pages/Provider/MyBooking";
 
 
 
@@ -47,8 +48,11 @@ function App() {
     <ProviderDashboard />
   </ProtectedRoute>} /> {/* Adding the ProviderDashboard route */}
         
-        <Route path="/chat-app" element={<ChatBox />} /> {/* Adding the ChatBox route */}        
+        <Route path="/chat-app" element={<ChatBox />} /> {/* Adding the ChatBox route */} 
+        
+        <Route path="/my-provider-bookings" element={<MyProviderBookings/>}/>
       </Routes>
+      
     </Router>
   );
 } 
