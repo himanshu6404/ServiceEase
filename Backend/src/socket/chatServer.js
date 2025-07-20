@@ -1,27 +1,41 @@
-// chatServer.js
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import { socketHandler } from "./socket.js";
-import dotenv from "dotenv";
+import cors from "cors";
 
-dotenv.config({
-  path: "./env",
-});
 
 const app = express();
+app.use(cors());
+
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "*", // You can replace with specific frontend URL
-    methods: ["GET", "POST"],
-  },
+    origin: "*", // Replace with your frontend URL in production
+    methods: ["GET", "POST"]
+  }
 });
 
-socketHandler(io);
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
 
-const CHAT_PORT = process.env.CHAT_PORT || 7001;
+  // Join user to a room based on bookingId or combined user IDs
+  socket.on("join_room", (roomId) => {
+    socket.join(roomId);
+    console.log(`User ${socket.id} joined room ${roomId}`);
+  });
 
-server.listen(CHAT_PORT, () => {
-  console.log(`Chat server running on port ${CHAT_PORT}`);
+  // Listen for send_message
+  socket.on("send_message", (data) => {
+    console.log("Message Received:", data);
+    io.to(data.room).emit("receive_message", data); // emit to all users in the room
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
+server.listen(7001, () => {
+  console.log("Chat server running on port 7001");
 });

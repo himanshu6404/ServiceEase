@@ -1,22 +1,25 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import ChatBox from '../ChatApp.jsx'; // adjust path as necessary
 
 export default function MyProviderBookings() {
   const [bookings, setBookings] = useState([]);
-  const [userId, setUserId] = useState(null);
+  const [user, setUser] = useState(null);
+  const [showChat, setShowChat] = useState(false);
+  const [currentChatRoom, setCurrentChatRoom] = useState(null);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user')); // assuming stored on login
-    if (user && user._id) {
-      setUserId(user._id);
+    const storedUser = JSON.parse(localStorage.getItem('user')); // assuming stored on login
+    if (storedUser && storedUser._id) {
+      setUser(storedUser);
     }
   }, []);
 
   useEffect(() => {
     const fetchProviderBookings = async () => {
-      if (!userId) return;
+      if (!user?._id) return;
       try {
-        const res = await fetch(`http://localhost:4000/api/bookings/provider/${userId}`);
+        const res = await fetch(`http://localhost:4000/api/bookings/provider/${user._id}`);
         const data = await res.json();
         setBookings(data);
       } catch (error) {
@@ -25,7 +28,13 @@ export default function MyProviderBookings() {
     };
 
     fetchProviderBookings();
-  }, [userId]);
+  }, [user]);
+
+  const handleChatOpen = (customerId) => {
+    const roomId = `${customerId}_${user._id}`; // consistent room ID
+    setCurrentChatRoom(roomId);
+    setShowChat(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#161B22] text-white relative px-4 py-12 sm:px-6 lg:px-8">
@@ -68,13 +77,19 @@ export default function MyProviderBookings() {
                 <tr key={item._id} className="border-b hover:bg-gray-100">
                   <td className="px-4 py-3">{index + 1}</td>
                   <td className="px-4 py-3">{item.serviceName}</td>
-                      <td className="px-4 py-3">{item.customerName?.charAt(0).toUpperCase() + item.customerName?.slice(1).toLowerCase()}</td>  {/*Capitalizing first letter*/}
-                  <td className="px-4 py-3">{new Date(item.date).toLocaleDateString()}</td>
-                      <td className="px-4 py-3">{item.address || 'N/A'}</td>
-                      <td className="px-4 py-3">{item.phoneNo || 'N/A'}</td>
-
                   <td className="px-4 py-3">
-                    <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 cursor-pointer">
+                    {item.customerName
+                      ? item.customerName.charAt(0).toUpperCase() + item.customerName.slice(1).toLowerCase()
+                      : 'N/A'}
+                  </td>
+                  <td className="px-4 py-3">{new Date(item.date).toLocaleDateString()}</td>
+                  <td className="px-4 py-3">{item.address || 'N/A'}</td>
+                  <td className="px-4 py-3">{item.phoneNo || 'N/A'}</td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => handleChatOpen(item.customerId)}
+                      className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 cursor-pointer"
+                    >
                       Chat
                     </button>
                   </td>
@@ -82,7 +97,7 @@ export default function MyProviderBookings() {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-6 text-gray-500">
+                <td colSpan="7" className="text-center py-6 text-gray-500">
                   No bookings found.
                 </td>
               </tr>
@@ -90,6 +105,17 @@ export default function MyProviderBookings() {
           </tbody>
         </table>
       </div>
+
+      {/* Chat Box */}
+      {showChat && user && (
+        <div className="fixed bottom-4 right-4 w-[400px] shadow-xl z-50">
+          <ChatBox
+            roomId={currentChatRoom}
+            username={user.name}
+            onClose={() => setShowChat(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }

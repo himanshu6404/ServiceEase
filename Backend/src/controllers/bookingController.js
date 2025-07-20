@@ -20,6 +20,7 @@ const getBookingsByCustomer = async (req, res) => {
       _id: b._id,
       serviceName: b.serviceType,
       providerName: b.serviceProviderId?.name,
+      providerId: b.serviceProviderId?._id,
       providerPhone: b.serviceProviderId?.phoneNo,
       date: b.date,
     }));
@@ -45,6 +46,7 @@ const getBookingsByCustomer = async (req, res) => {
       serviceName: b.serviceType,
       providerName: b.serviceProviderId?.name,
       customerName: b.customerId?.name,
+      customerId: b.customerId?._id,
       address: b.address,
       phoneNo: b.customerId?.phoneNo,
       date: b.date,

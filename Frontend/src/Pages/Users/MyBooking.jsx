@@ -1,23 +1,25 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import ChatBox from '../ChatApp.jsx'; // <-- import your chat component
 
 export default function MyBooking() {
   const [bookings, setBookings] = useState([]);
-  const [userId, setUserId] = useState(null);
+  const [user, setUser] = useState(null);
+  const [showChat, setShowChat] = useState(false);
+  const [currentChatRoom, setCurrentChatRoom] = useState(null);
 
   useEffect(() => {
-    // Replace this logic with your actual authentication/user fetching method
-    const user = JSON.parse(localStorage.getItem('user')); // assuming user is stored here
-    if (user && user._id) {
-      setUserId(user._id);
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser && storedUser._id) {
+      setUser(storedUser);
     }
   }, []);
 
   useEffect(() => {
     const fetchCustomerBookings = async () => {
-      if (!userId) return;
+      if (!user?._id) return;
       try {
-        const res = await fetch(`http://localhost:4000/api/bookings/customer/${userId}`);
+        const res = await fetch(`http://localhost:4000/api/bookings/customer/${user._id}`);
         const data = await res.json();
         setBookings(data);
       } catch (error) {
@@ -26,7 +28,13 @@ export default function MyBooking() {
     };
 
     fetchCustomerBookings();
-  }, [userId]);
+  }, [user]);
+
+  const handleChatOpen = (providerId) => {
+    const roomId = `${user._id}_${providerId}`;
+    setCurrentChatRoom(roomId);
+    setShowChat(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#161B22] text-white relative px-4 py-12 sm:px-6 lg:px-8">
@@ -68,11 +76,16 @@ export default function MyBooking() {
                 <tr key={item._id} className="border-b hover:bg-gray-100">
                   <td className="px-4 py-3">{index + 1}</td>
                   <td className="px-4 py-3">{item.serviceName}</td>
-                  <td className="px-4 py-3">{item.providerName}</td>
-                  <td className="px-4 py-3">{new Date(item.date).toLocaleDateString()}</td>
+                  <td className="px-4 py-3 capitalize">{item.providerName}</td>
+                  <td className="px-4 py-3">
+                    {new Date(item.date).toLocaleDateString()}
+                  </td>
                   <td className="px-4 py-3">{item.providerPhone || 'N/A'}</td>
                   <td className="px-4 py-3">
-                    <button className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 cursor-pointer">
+                    <button
+                      onClick={() => handleChatOpen(item.providerId)}
+                      className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 cursor-pointer"
+                    >
                       Chat
                     </button>
                   </td>
@@ -80,7 +93,7 @@ export default function MyBooking() {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-6 text-gray-500">
+                <td colSpan="6" className="text-center py-6 text-gray-500">
                   No bookings found.
                 </td>
               </tr>
@@ -88,6 +101,17 @@ export default function MyBooking() {
           </tbody>
         </table>
       </div>
+
+      {/* Chat UI Section */}
+      {showChat && user && (
+        <div className="fixed bottom-4 right-4 w-[400px] shadow-xl z-50">
+          <ChatBox
+            roomId={currentChatRoom}
+            username={user.name}
+            onClose={() => setShowChat(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }

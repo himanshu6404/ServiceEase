@@ -1,84 +1,85 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import socket from "../socket/socket.js";
 
-const ChatBox = () => {
-  const [username, setUsername] = useState("");
+const ChatBox = ({ roomId, username, onClose }) => {
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
-  const messagesEndRef = useRef(null);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const user = prompt("Enter your name:");
-    setUsername(user || "Anonymous");
+    socket.connect();
+    socket.emit("join_room", roomId);
 
-    socket.on("receiveMessage", (data) => {
-      setChat((prev) => [...prev, data]);
-    });
+    const handleReceiveMessage = (data) => {
+      // Only append messages from others or prevent duplicates
+      if (data.author !== username) {
+        setMessages((prev) => [...prev, data]);
+      }
+    };
+
+    socket.on("receive_message", handleReceiveMessage);
 
     return () => {
-      socket.off("receiveMessage");
+      socket.off("receive_message", handleReceiveMessage);
+      socket.disconnect();
     };
-  }, []);
+  }, [roomId]);
 
-  const sendMessage = (e) => {
-    e.preventDefault();
-    if (message.trim()) {
-      const newMessage = {
-        text: message,
-        sender: username,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  const sendMessage = () => {
+    if (message.trim() !== "") {
+      const msgData = {
+        room: roomId,
+        author: username,
+        message: message,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
-      socket.emit("sendMessage", newMessage);
+      socket.emit("send_message", msgData);
+      setMessages((prev) => [...prev, msgData]); // Append your own message
       setMessage("");
     }
   };
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chat]);
-
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded shadow">
-      <h2 className="text-xl font-semibold mb-2">Chat</h2>
-      <div className="h-64 overflow-y-auto border p-2 rounded mb-2 bg-gray-50 space-y-2">
-        {chat.map((msg, idx) => {
-          const isSender = msg.sender === username;
-          return (
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center">
+      <div className="bg-gray-900 text-white w-[90%] md:w-[400px] h-[450px] rounded-2xl shadow-xl flex flex-col">
+        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+          <h2 className="text-xl font-semibold">Live Chat</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-red-500 text-lg">&times;</button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-2">
+          {messages.map((msg, index) => (
             <div
-              key={idx}
-              className={`flex ${isSender ? "justify-end" : "justify-start"}`}
+              key={index}
+              className={`p-2 rounded-lg max-w-xs ${
+                msg.author === username
+                  ? "bg-blue-600 self-end ml-auto text-right"
+                  : "bg-gray-700 self-start mr-auto"
+              }`}
             >
-              <div
-                className={`max-w-[70%] px-3 py-2 rounded-lg shadow text-sm ${
-                  isSender
-                    ? "bg-blue-500 text-white rounded-br-none"
-                    : "bg-gray-200 text-gray-900 rounded-bl-none"
-                }`}
-              >
-                <div className="font-medium">{msg.sender}</div>
-                <div>{msg.text}</div>
-                <div className="text-xs text-right mt-1 opacity-70">{msg.timestamp}</div>
-              </div>
+              <div className="text-sm font-semibold">{msg.author}</div>
+              <div className="text-sm">{msg.message}</div>
+              <div className="text-xs text-gray-300 mt-1">{msg.time}</div>
             </div>
-          );
-        })}
-        <div ref={messagesEndRef} />
+          ))}
+        </div>
+
+        <div className="p-4 border-t border-gray-700 flex">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+            className="flex-1 p-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Type a message..."
+          />
+          <button
+            onClick={sendMessage}
+            className="ml-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium"
+          >
+            Send
+          </button>
+        </div>
       </div>
-      <form onSubmit={sendMessage} className="flex gap-2">
-        <input
-          type="text"
-          value={message}
-          placeholder="Type a message..."
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-grow p-2 border rounded focus:outline-none focus:ring"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Send
-        </button>
-      </form>
     </div>
   );
 };
