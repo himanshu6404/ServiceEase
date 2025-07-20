@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*", // Replace with your frontend URL in production
+    origin: "https://serviceease-webservice.onrender.com/", // Replace with your frontend URL in production
     methods: ["GET", "POST"]
   }
 });
