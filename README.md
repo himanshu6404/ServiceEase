@@ -2,22 +2,23 @@
 
 ServiceEase is a full-stack home service booking platform where users can easily find and hire verified professionals for tasks like cleaning, painting, repairs, and more. From plumbing issues to shifting services, ServiceEase connects users with local experts — all in just a few clicks.
 Built using the MERN stack (MongoDB, Express.js, React.js, Node.js), it also features an integrated AI assistant that helps users diagnose issues and connect with the right service provider.
+
 ---
 
 ## 🚀 Features
 
 ### 🧑 User Side
--🔐 Secure authentication (Login/Signup)
--🏡 Browse and book a wide range of home services
--🤖 AI Assistant for smart issue diagnosis and expert recommendations
--💬 Chat-based scheduling with service providers
--📂 View and manage bookings from a dashboard
+- 🔐 Secure authentication (Login/Signup)
+- 🏡 Browse and book a wide range of home services
+- 🤖 AI Assistant for smart issue diagnosis and expert recommendations
+- 💬 Chat-based scheduling with service providers
+- 📂 View and manage bookings from a dashboard
 
--🤖 AI Assistant
--Not sure what’s wrong? Use our AI assistant to:
--Describe your issue in natural language
--Get suggestions for the right service category
--Connect to a verified professional seamlessly
+### 🤖 AI Assistant
+- Not sure what’s wrong? Use our AI assistant to:
+- Describe your issue in natural language
+- Get suggestions for the right service category
+- Connect to a verified professional seamlessly
 
 ---
 
